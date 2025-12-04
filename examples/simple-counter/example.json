@@ -1,0 +1,6 @@
+{
+  "name": "simple-counter",
+  "category": "basic",
+  "description": "A simple encrypted counter demonstrating FHE.add and FHE.sub",
+  "createdAt": "2025-12-04T07:54:04.771Z"
+}
