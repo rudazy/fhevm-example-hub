@@ -1,0 +1,6 @@
+{
+  "name": "encrypt-single-value",
+  "category": "encryption",
+  "description": "Demonstrates how to encrypt a single value and store it on-chain",
+  "createdAt": "2025-12-05T22:09:47.712Z"
+}

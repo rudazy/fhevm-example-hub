@@ -1,0 +1,6 @@
+{
+  "name": "encrypt-multiple-values",
+  "category": "encryption",
+  "description": "Demonstrates how to encrypt and handle multiple values in a single transaction",
+  "createdAt": "2025-12-05T22:09:47.766Z"
+}
