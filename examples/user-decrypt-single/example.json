@@ -1,0 +1,6 @@
+{
+  "name": "user-decrypt-single",
+  "category": "decryption",
+  "description": "Demonstrates how a user can decrypt their own encrypted value",
+  "createdAt": "2025-12-05T22:49:59.861Z"
+}

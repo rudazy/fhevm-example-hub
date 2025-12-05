@@ -1,0 +1,6 @@
+{
+  "name": "public-decrypt-single",
+  "category": "decryption",
+  "description": "Demonstrates public decryption where result is visible to everyone",
+  "createdAt": "2025-12-05T22:49:59.975Z"
+}
