@@ -1,0 +1,6 @@
+{
+  "name": "equality-comparison",
+  "category": "basic",
+  "description": "Demonstrates FHE comparison operations: eq, ne, gt, lt, gte, lte",
+  "createdAt": "2025-12-05T21:49:31.979Z"
+}
