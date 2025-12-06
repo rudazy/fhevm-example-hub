@@ -52,7 +52,7 @@ const CATEGORY_TITLES: Record<string, string> = {
 };
 
 async function generateDocs(): Promise<void> {
-  console.log('\n📚 Generating documentation...\n');
+  console.log('\nGenerating documentation...\n');
 
   const examplesPath = path.join(__dirname, '../../examples');
   const docsPath = path.join(__dirname, '../../docs');
@@ -90,8 +90,8 @@ async function generateDocs(): Promise<void> {
     await generateExamplePage(examplesPath, docsPath, dir);
   }
 
-  console.log('\n✅ Documentation generated successfully!');
-  console.log(`📁 Location: ${docsPath}\n`);
+  console.log('\n[DONE] Documentation generated successfully!');
+  console.log(`Location: ${docsPath}\n`);
 }
 
 async function getExampleDirectories(examplesPath: string): Promise<string[]> {
