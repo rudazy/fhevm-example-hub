@@ -424,7 +424,7 @@ describe("EqualityComparison", function () {
 ];
 
 async function createAllExamples(): Promise<void> {
-  console.log('\n🚀 Creating all FHEVM examples...\n');
+  console.log('\nCreating all FHEVM examples...\n');
 
   const baseTemplatePath = path.join(__dirname, '../../base-template');
   const examplesPath = path.join(__dirname, '../../examples');
@@ -436,7 +436,7 @@ async function createAllExamples(): Promise<void> {
 
     // Skip if already exists
     if (await fs.pathExists(examplePath)) {
-      console.log(`  ⏭️  Skipped (already exists)`);
+      console.log(`  [SKIP] Already exists`);
       continue;
     }
 
@@ -510,10 +510,10 @@ See \`test/${example.contractName}.ts\`
 `;
     await fs.writeFile(path.join(examplePath, 'README.md'), readme);
 
-    console.log(`  ✅ Created successfully`);
+    console.log(`  [OK] Created successfully`);
   }
 
-  console.log('\n✅ All examples created!\n');
+  console.log('\n[DONE] All examples created!\n');
 }
 
 function formatName(name: string): string {
