@@ -1,0 +1,6 @@
+{
+  "name": "blind-auction",
+  "category": "advanced",
+  "description": "A blind auction where bid amounts remain encrypted until the auction ends",
+  "createdAt": "2025-12-06T23:31:31.990Z"
+}
