@@ -1,0 +1,6 @@
+{
+  "name": "access-control-basics",
+  "category": "access-control",
+  "description": "Demonstrates FHE.allow and FHE.allowThis for managing encrypted data access",
+  "createdAt": "2025-12-06T15:23:46.483Z"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "access-control-transient",
+  "category": "access-control",
+  "description": "Demonstrates FHE.allowTransient for temporary access during transactions",
+  "createdAt": "2025-12-06T15:23:46.528Z"
+}
