@@ -1,0 +1,6 @@
+{
+  "name": "anti-pattern-view-functions",
+  "category": "anti-patterns",
+  "description": "Demonstrates why view functions cannot return decrypted encrypted values",
+  "createdAt": "2025-12-06T23:02:48.374Z"
+}

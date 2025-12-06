@@ -1,0 +1,6 @@
+{
+  "name": "anti-pattern-missing-allow",
+  "category": "anti-patterns",
+  "description": "Demonstrates the consequences of forgetting TFHE.allowThis() permissions",
+  "createdAt": "2025-12-06T23:02:48.442Z"
+}
