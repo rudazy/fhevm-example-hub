@@ -72,3 +72,88 @@ async function getExampleDirectories(examplesPath: string): Promise<string[]> {
 
   return dirs.sort();
 }
+
+async function validateExample(
+  examplesPath: string,
+  example: string,
+  options: ValidateOptions
+): Promise<ValidationResult> {
+  const examplePath = path.join(examplesPath, example);
+  
+  const result: ValidationResult = {
+    example,
+    hasPackageJson: false,
+    hasContracts: false,
+    hasTests: false,
+    hasReadme: false,
+    hasExampleJson: false,
+    compiles: null,
+    testsPass: null,
+    errors: []
+  };
+
+  // Check package.json
+  result.hasPackageJson = await fs.pathExists(path.join(examplePath, 'package.json'));
+  if (!result.hasPackageJson) {
+    result.errors.push('Missing package.json');
+  }
+
+  // Check contracts directory
+  const contractsPath = path.join(examplePath, 'contracts');
+  if (await fs.pathExists(contractsPath)) {
+    const contracts = await fs.readdir(contractsPath);
+    const solFiles = contracts.filter(f => f.endsWith('.sol'));
+    result.hasContracts = solFiles.length > 0;
+    if (!result.hasContracts) {
+      result.errors.push('No .sol files in contracts/');
+    }
+  } else {
+    result.errors.push('Missing contracts/ directory');
+  }
+
+  // Check test directory
+  const testsPath = path.join(examplePath, 'test');
+  if (await fs.pathExists(testsPath)) {
+    const tests = await fs.readdir(testsPath);
+    const testFiles = tests.filter(f => f.endsWith('.ts') && !['instance.ts', 'signers.ts'].includes(f));
+    result.hasTests = testFiles.length > 0;
+    if (!result.hasTests) {
+      result.errors.push('No test files in test/');
+    }
+  } else {
+    result.errors.push('Missing test/ directory');
+  }
+
+  // Check README
+  result.hasReadme = await fs.pathExists(path.join(examplePath, 'README.md'));
+  if (!result.hasReadme) {
+    result.errors.push('Missing README.md');
+  }
+
+  // Check example.json
+  result.hasExampleJson = await fs.pathExists(path.join(examplePath, 'example.json'));
+  if (!result.hasExampleJson) {
+    result.errors.push('Missing example.json');
+  }
+
+  return result;
+}
+
+function getStatusIcon(result: ValidationResult): string {
+  const checks = [
+    result.hasPackageJson,
+    result.hasContracts,
+    result.hasTests,
+    result.hasReadme,
+    result.hasExampleJson
+  ];
+
+  const passedChecks = checks.filter(c => c).length;
+  const totalChecks = checks.length;
+
+  if (passedChecks === totalChecks) {
+    return `[OK] All ${totalChecks} checks passed`;
+  } else {
+    return `[WARN] ${passedChecks}/${totalChecks} checks passed - ${result.errors.join(', ')}`;
+  }
+}
