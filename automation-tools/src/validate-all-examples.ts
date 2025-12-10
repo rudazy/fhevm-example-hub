@@ -157,3 +157,41 @@ function getStatusIcon(result: ValidationResult): string {
     return `[WARN] ${passedChecks}/${totalChecks} checks passed - ${result.errors.join(', ')}`;
   }
 }
+
+function printSummary(results: ValidationResult[]): void {
+  console.log('==============================');
+  console.log('Validation Summary\n');
+
+  const passed = results.filter(r => r.errors.length === 0).length;
+  const warnings = results.filter(r => r.errors.length > 0).length;
+
+  console.log(`Total examples: ${results.length}`);
+  console.log(`Passed: ${passed}`);
+  console.log(`Warnings: ${warnings}`);
+
+  console.log('\nStructure Check:');
+  console.log(`  package.json: ${results.filter(r => r.hasPackageJson).length}/${results.length}`);
+  console.log(`  contracts/: ${results.filter(r => r.hasContracts).length}/${results.length}`);
+  console.log(`  test/: ${results.filter(r => r.hasTests).length}/${results.length}`);
+  console.log(`  README.md: ${results.filter(r => r.hasReadme).length}/${results.length}`);
+  console.log(`  example.json: ${results.filter(r => r.hasExampleJson).length}/${results.length}`);
+
+  if (warnings > 0) {
+    console.log('\nExamples with issues:');
+    results.filter(r => r.errors.length > 0).forEach(r => {
+      console.log(`  - ${r.example}: ${r.errors.join(', ')}`);
+    });
+  }
+
+  console.log('\n==============================\n');
+}
+
+// Parse command line arguments
+const args = process.argv.slice(2);
+const options: ValidateOptions = {
+  skipCompile: args.includes('--skip-compile'),
+  skipTests: args.includes('--skip-tests'),
+  verbose: args.includes('--verbose')
+};
+
+validateAllExamples(options).catch(console.error);
