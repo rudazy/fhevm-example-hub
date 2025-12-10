@@ -1,0 +1,6 @@
+{
+  "name": "erc7984-confidential-token",
+  "category": "advanced",
+  "description": "ERC7984 confidential token implementation with encrypted balances",
+  "createdAt": "2025-12-10T10:14:25.476Z"
+}
