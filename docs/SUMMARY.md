@@ -35,7 +35,9 @@
 ## Advanced Examples
 
 * [Blind Auction](examples/advanced/blind-auction.md)
+* [Confidential Vesting](examples/advanced/confidential-vesting.md)
 * [Confidential Voting](examples/advanced/confidential-voting.md)
 * [Encrypted Lottery](examples/advanced/encrypted-lottery.md)
+* [Erc7984 Confidential Token](examples/advanced/erc7984-confidential-token.md)
 * [Handle Lifecycle](examples/advanced/handle-lifecycle.md)
 
