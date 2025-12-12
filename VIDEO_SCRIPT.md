@@ -20,7 +20,7 @@ Use this script as a guide for recording the demonstration video.
 **Show:** Scroll through README.md on GitHub
 
 **Highlight:**
-- 21 examples
+- 24 examples
 - 6 categories (Basic, Encryption, Decryption, Access Control, Anti-Patterns, Advanced)
 - Automation tools
 - Auto-generated documentation
