@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FHEVM Example Hub - Examples Index</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0f23;
+            color: #ccc;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #1a1a3e 0%, #0f0f23 100%);
+            border-radius: 15px;
+            border: 1px solid #333;
+        }
+        h1 {
+            color: #00d4ff;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #888;
+            font-size: 1.1em;
+        }
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+        }
+        .stat {
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            color: #00d4ff;
+            font-weight: bold;
+        }
+        .stat-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .search-container {
+            margin-bottom: 30px;
+        }
+        .search-box {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            background: #1a1a3e;
+            border: 2px solid #333;
+            border-radius: 10px;
+            color: #fff;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+        .search-box:focus {
+            border-color: #00d4ff;
+        }
+        .search-box::placeholder {
+            color: #666;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            padding: 10px 20px;
+            background: #1a1a3e;
+            border: 1px solid #333;
+            color: #ccc;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+        }
+        .filter-btn:hover {
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+        .filter-btn.active {
+            background: #00d4ff;
+            color: #0f0f23;
+            border-color: #00d4ff;
+        }
+        .examples-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        .example-card {
+            background: #1a1a3e;
+            border-radius: 12px;
+            padding: 25px;
+            border: 1px solid #333;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .example-card:hover {
+            border-color: #00d4ff;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 212, 255, 0.1);
+        }
+        .example-card.hidden {
+            display: none;
+        }
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        .card-title {
+            color: #fff;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+        .card-category {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+        .category-basic { background: #2ecc71; color: #000; }
+        .category-encryption { background: #3498db; color: #fff; }
+        .category-decryption { background: #9b59b6; color: #fff; }
+        .category-access-control { background: #e67e22; color: #fff; }
+        .category-anti-patterns { background: #e74c3c; color: #fff; }
+        .category-advanced { background: #f39c12; color: #000; }
+        .card-description {
+            color: #888;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+        }
+        .card-path {
+            font-family: monospace;
+            font-size: 12px;
+            color: #666;
+        }
+        .card-features {
+            display: flex;
+            gap: 8px;
+        }
+        .feature-tag {
+            padding: 3px 8px;
+            background: #0f0f23;
+            border-radius: 4px;
+            font-size: 10px;
+            color: #00d4ff;
+        }
+        .no-results {
+            text-align: center;
+            padding: 50px;
+            color: #666;
+        }
+        .no-results h3 {
+            margin-bottom: 10px;
+            color: #888;
+        }
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+            color: #666;
+            border-top: 1px solid #333;
+        }
+        footer a {
+            color: #00d4ff;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>FHEVM Example Hub</h1>
+            <p class="subtitle">Comprehensive examples for Fully Homomorphic Encryption on EVM</p>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-value">21</div>
+                    <div class="stat-label">Examples</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">6</div>
+                    <div class="stat-label">Categories</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-value">4600+</div>
+                    <div class="stat-label">Lines of Code</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="search-container">
+            <input type="text" class="search-box" id="searchBox" placeholder="Search examples by name, description, or concept...">
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All (21)</button>
+            <button class="filter-btn" data-filter="basic">Basic (3)</button>
+            <button class="filter-btn" data-filter="encryption">Encryption (2)</button>
+            <button class="filter-btn" data-filter="decryption">Decryption (4)</button>
+            <button class="filter-btn" data-filter="access-control">Access Control (3)</button>
+            <button class="filter-btn" data-filter="anti-patterns">Anti-Patterns (3)</button>
+            <button class="filter-btn" data-filter="advanced">Advanced (6)</button>
+        </div>
+
+        <div class="examples-grid" id="examplesGrid">
+            <!-- Examples will be rendered here -->
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <h3>No examples found</h3>
+            <p>Try a different search term or filter</p>
+        </div>
+
+        <footer>
+            <p>FHEVM Example Hub | <a href="https://github.com/rudazy/fhevm-example-hub">GitHub Repository</a> | <a href="https://docs.zama.ai/fhevm">FHEVM Documentation</a></p>
+        </footer>
+    </div>
+
+    <script>
+        const examples = [
+            {
+                name: "Simple Counter",
+                slug: "simple-counter",
+                category: "basic",
+                description: "Basic encrypted counter demonstrating FHE.add and FHE.sub operations with proper permission handling.",
+                features: ["euint64", "FHE.add", "FHE.sub", "Gateway"]
+            },
+            {
+                name: "Arithmetic Operations",
+                slug: "arithmetic-operations",
+                category: "basic",
+                description: "Demonstrates all arithmetic operations: addition, subtraction, multiplication, and division on encrypted values.",
+                features: ["FHE.add", "FHE.sub", "FHE.mul", "FHE.div"]
+            },
+            {
+                name: "Equality Comparison",
+                slug: "equality-comparison",
+                category: "basic",
+                description: "Shows comparison operations on encrypted values: equal, not equal, greater than, less than.",
+                features: ["FHE.eq", "FHE.ne", "FHE.gt", "FHE.lt", "ebool"]
+            },
+            {
+                name: "Encrypt Single Value",
+                slug: "encrypt-single-value",
+                category: "encryption",
+                description: "Demonstrates how to encrypt a single value and store it on-chain with proper input proofs.",
+                features: ["einput", "inputProof", "TFHE.asEuint64"]
+            },
+            {
+                name: "Encrypt Multiple Values",
+                slug: "encrypt-multiple-values",
+                category: "encryption",
+                description: "Handle multiple encrypted values in a single transaction with struct storage.",
+                features: ["einput", "struct", "multiple values"]
+            },
+            {
+                name: "User Decrypt Single",
+                slug: "user-decrypt-single",
+                category: "decryption",
+                description: "User-initiated decryption of a single encrypted value using Gateway callbacks.",
+                features: ["Gateway", "requestDecryption", "callback"]
+            },
+            {
+                name: "User Decrypt Multiple",
+                slug: "user-decrypt-multiple",
+                category: "decryption",
+                description: "Decrypt multiple values in a single Gateway request for efficiency.",
+                features: ["Gateway", "batch decryption", "callback"]
+            },
+            {
+                name: "Public Decrypt Single",
+                slug: "public-decrypt-single",
+                category: "decryption",
+                description: "Public decryption where the result is visible to everyone on-chain.",
+                features: ["Gateway", "public reveal", "callback"]
+            },
+            {
+                name: "Public Decrypt Multiple",
+                slug: "public-decrypt-multiple",
+                category: "decryption",
+                description: "Reveal multiple values publicly, useful for election results or auction outcomes.",
+                features: ["Gateway", "batch reveal", "voting"]
+            },
+            {
+                name: "Access Control Basics",
+                slug: "access-control-basics",
+                category: "access-control",
+                description: "Demonstrates TFHE.allow and TFHE.allowThis for managing who can access encrypted data.",
+                features: ["TFHE.allow", "TFHE.allowThis", "permissions"]
+            },
+            {
+                name: "Access Control Transient",
+                slug: "access-control-transient",
+                category: "access-control",
+                description: "Use TFHE.allowTransient for temporary access during a single transaction.",
+                features: ["TFHE.allowTransient", "temporary access"]
+            },
+            {
+                name: "Input Proofs Explained",
+                slug: "input-proofs-explained",
+                category: "access-control",
+                description: "Explains why input proofs are essential for FHEVM security and how to use them.",
+                features: ["inputProof", "security", "validation"]
+            },
+            {
+                name: "Anti-Pattern: View Functions",
+                slug: "anti-pattern-view-functions",
+                category: "anti-patterns",
+                description: "Demonstrates why view functions cannot return decrypted encrypted values.",
+                features: ["view functions", "common mistake"]
+            },
+            {
+                name: "Anti-Pattern: Missing Allow",
+                slug: "anti-pattern-missing-allow",
+                category: "anti-patterns",
+                description: "Shows the consequences of forgetting TFHE.allowThis() permissions.",
+                features: ["TFHE.allowThis", "permission error"]
+            },
+            {
+                name: "Anti-Pattern: Common Mistakes",
+                slug: "anti-pattern-common-mistakes",
+                category: "anti-patterns",
+                description: "Collection of common FHEVM mistakes including wrong comparisons and permission handling.",
+                features: ["best practices", "debugging"]
+            },
+            {
+                name: "Handle Lifecycle",
+                slug: "handle-lifecycle",
+                category: "advanced",
+                description: "Deep dive into how encrypted handles are created, used, and managed throughout their lifecycle.",
+                features: ["handles", "lifecycle", "permissions"]
+            },
+            {
+                name: "Blind Auction",
+                slug: "blind-auction",
+                category: "advanced",
+                description: "A blind auction where bid amounts remain encrypted until the auction ends.",
+                features: ["auction", "FHE.select", "Gateway"]
+            },
+            {
+                name: "Confidential Voting",
+                slug: "confidential-voting",
+                category: "advanced",
+                description: "Voting system where votes are encrypted and tallied privately until reveal.",
+                features: ["voting", "tally", "Gateway"]
+            },
+            {
+                name: "Encrypted Lottery",
+                slug: "encrypted-lottery",
+                category: "advanced",
+                description: "Lottery system where ticket numbers remain encrypted until the draw.",
+                features: ["lottery", "randomness", "Gateway"]
+            },
+            {
+                name: "ERC7984 Confidential Token",
+                slug: "erc7984-confidential-token",
+                category: "advanced",
+                description: "ERC7984 token implementation with encrypted balances and confidential transfers.",
+                features: ["ERC7984", "token", "transfer"]
+            },
+            {
+                name: "Confidential Vesting",
+                slug: "confidential-vesting",
+                category: "advanced",
+                description: "Vesting wallet with encrypted vesting amounts and time-based release.",
+                features: ["vesting", "time-lock", "ERC7984"]
+            }
+        ];
+
+        const grid = document.getElementById('examplesGrid');
+        const searchBox = document.getElementById('searchBox');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const noResults = document.getElementById('noResults');
+
+        let currentFilter = 'all';
+        let searchTerm = '';
+
+        function renderExamples() {
+            grid.innerHTML = '';
+            let visibleCount = 0;
+
+            examples.forEach(example => {
+                const matchesFilter = currentFilter === 'all' || example.category === currentFilter;
+                const matchesSearch = searchTerm === '' || 
+                    example.name.toLowerCase().includes(searchTerm) ||
+                    example.description.toLowerCase().includes(searchTerm) ||
+                    example.features.some(f => f.toLowerCase().includes(searchTerm));
+
+                if (matchesFilter && matchesSearch) {
+                    visibleCount++;
+                    const card = document.createElement('div');
+                    card.className = 'example-card';
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <span class="card-title">${example.name}</span>
+                            <span class="card-category category-${example.category}">${example.category}</span>
+                        </div>
+                        <p class="card-description">${example.description}</p>
+                        <div class="card-footer">
+                            <span class="card-path">examples/${example.slug}/</span>
+                            <div class="card-features">
+                                ${example.features.slice(0, 3).map(f => `<span class="feature-tag">${f}</span>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                    card.onclick = () => {
+                        window.open(`../examples/${example.slug}/README.md`, '_blank');
+                    };
+                    grid.appendChild(card);
+                }
+            });
+
+            noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+        }
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderExamples();
+            });
+        });
+
+        searchBox.addEventListener('input', (e) => {
+            searchTerm = e.target.value.toLowerCase();
+            renderExamples();
+        });
+
+        renderExamples();
+    </script>
+</body>
+</html>
