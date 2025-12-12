@@ -207,7 +207,7 @@
             <p class="subtitle">Comprehensive examples for Fully Homomorphic Encryption on EVM</p>
             <div class="stats">
                 <div class="stat">
-                    <div class="stat-value">21</div>
+                    <div class="stat-value">24</div>
                     <div class="stat-label">Examples</div>
                 </div>
                 <div class="stat">
@@ -215,7 +215,7 @@
                     <div class="stat-label">Categories</div>
                 </div>
                 <div class="stat">
-                    <div class="stat-value">4600+</div>
+                    <div class="stat-value">5500+</div>
                     <div class="stat-label">Lines of Code</div>
                 </div>
             </div>
@@ -226,17 +226,16 @@
         </div>
 
         <div class="filters">
-            <button class="filter-btn active" data-filter="all">All (21)</button>
+            <button class="filter-btn active" data-filter="all">All (24)</button>
             <button class="filter-btn" data-filter="basic">Basic (3)</button>
             <button class="filter-btn" data-filter="encryption">Encryption (2)</button>
             <button class="filter-btn" data-filter="decryption">Decryption (4)</button>
             <button class="filter-btn" data-filter="access-control">Access Control (3)</button>
             <button class="filter-btn" data-filter="anti-patterns">Anti-Patterns (3)</button>
-            <button class="filter-btn" data-filter="advanced">Advanced (6)</button>
+            <button class="filter-btn" data-filter="advanced">Advanced (9)</button>
         </div>
 
         <div class="examples-grid" id="examplesGrid">
-            <!-- Examples will be rendered here -->
         </div>
 
         <div class="no-results" id="noResults" style="display: none;">
@@ -397,6 +396,27 @@
                 category: "advanced",
                 description: "Vesting wallet with encrypted vesting amounts and time-based release.",
                 features: ["vesting", "time-lock", "ERC7984"]
+            },
+            {
+                name: "ERC7984 to ERC20 Wrapper",
+                slug: "erc7984-to-erc20-wrapper",
+                category: "advanced",
+                description: "Wrapper contract that converts between ERC7984 confidential tokens and standard ERC20 tokens.",
+                features: ["ERC7984", "ERC20", "wrap/unwrap"]
+            },
+            {
+                name: "Confidential NFT",
+                slug: "confidential-nft",
+                category: "advanced",
+                description: "NFT with encrypted metadata that only the owner can reveal.",
+                features: ["NFT", "metadata", "reveal"]
+            },
+            {
+                name: "Private Escrow",
+                slug: "private-escrow",
+                category: "advanced",
+                description: "Escrow contract with encrypted amounts and dispute resolution.",
+                features: ["escrow", "dispute", "arbiter"]
             }
         ];
 
