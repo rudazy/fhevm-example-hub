@@ -207,7 +207,7 @@ async function demoComplete(): Promise<void> {
   console.log('');
   console.log('FHEVM Example Hub Features:');
   console.log('');
-  console.log('  - 21 standalone examples covering all FHEVM concepts');
+  console.log('  - 24 standalone examples covering all FHEVM concepts');
   console.log('  - Automation tools for scaffolding new examples');
   console.log('  - Auto-generated GitBook documentation');
   console.log('  - Validation and maintenance tools');
