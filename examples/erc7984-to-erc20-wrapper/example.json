@@ -1,0 +1,6 @@
+{
+  "name": "erc7984-to-erc20-wrapper",
+  "category": "advanced",
+  "description": "Wrapper contract that converts between ERC7984 confidential tokens and standard ERC20 tokens",
+  "createdAt": "2025-12-12T12:59:45.533Z"
+}
