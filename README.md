@@ -5,7 +5,7 @@ A comprehensive collection of standalone FHEVM examples with automation tools an
 ## Features
 
 - **Automation Tools** - TypeScript CLI scripts to scaffold new examples instantly
-- **21 Standalone Examples** - One folder per concept, clean and minimal
+- **24 Standalone Examples** - One folder per concept, clean and minimal
 - **Auto-Generated Docs** - GitBook-compatible documentation from code annotations
 - **Maintenance Tools** - Update dependencies and validate all examples with one command
 - **Comprehensive Tests** - Every example includes tests showing correct usage and anti-patterns
@@ -26,7 +26,7 @@ fhevm-example-hub/
 └── scripts/                    # Utility scripts
 ```
 
-## Examples Included (21 Total)
+## Examples Included (24 Total)
 
 ### Basic (3 examples)
 | Example | Description |
@@ -63,7 +63,7 @@ fhevm-example-hub/
 | anti-pattern-missing-allow | Consequences of forgetting permissions |
 | anti-pattern-common-mistakes | Collection of common FHEVM mistakes |
 
-### Advanced (6 examples)
+### Advanced (9 examples)
 | Example | Description |
 |---------|-------------|
 | handle-lifecycle | How encrypted handles are created and managed |
@@ -72,6 +72,9 @@ fhevm-example-hub/
 | encrypted-lottery | Lottery with encrypted ticket numbers |
 | erc7984-confidential-token | ERC7984 token with encrypted balances |
 | confidential-vesting | Vesting wallet with encrypted amounts |
+| erc7984-to-erc20-wrapper | Convert between confidential and public tokens |
+| confidential-nft | NFT with encrypted metadata |
+| private-escrow | Escrow with encrypted amounts and conditions |
 
 ## Quick Start
 ```bash

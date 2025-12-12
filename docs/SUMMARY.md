@@ -35,9 +35,12 @@
 ## Advanced Examples
 
 * [Blind Auction](examples/advanced/blind-auction.md)
+* [Confidential Nft](examples/advanced/confidential-nft.md)
 * [Confidential Vesting](examples/advanced/confidential-vesting.md)
 * [Confidential Voting](examples/advanced/confidential-voting.md)
 * [Encrypted Lottery](examples/advanced/encrypted-lottery.md)
 * [Erc7984 Confidential Token](examples/advanced/erc7984-confidential-token.md)
+* [Erc7984 To Erc20 Wrapper](examples/advanced/erc7984-to-erc20-wrapper.md)
 * [Handle Lifecycle](examples/advanced/handle-lifecycle.md)
+* [Private Escrow](examples/advanced/private-escrow.md)
 
