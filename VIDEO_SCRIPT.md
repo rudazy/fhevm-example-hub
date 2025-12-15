@@ -4,14 +4,36 @@ Use this script as a guide for recording the demonstration video.
 
 ---
 
-## Video Structure (Recommended: 5-7 minutes)
+## Setup Before Recording
+
+1. Clone the repository fresh:
+```
+   git clone https://github.com/rudazy/fhevm-example-hub.git
+   cd fhevm-example-hub
+```
+
+2. Install automation tools:
+```
+   cd automation-tools
+   npm install
+```
+
+3. Open these in browser tabs (ready to show):
+   - `tools/handle-debugger.html`
+   - `tools/examples-index.html`
+
+4. Increase terminal font size for readability
+
+---
+
+## Video Structure (5-7 minutes)
 
 ### 1. Introduction (30 seconds)
 
 **Show:** GitHub repository page
 
 **Say:**
-"This is the FHEVM Example Hub - a comprehensive collection of standalone examples for building privacy-preserving smart contracts using Fully Homomorphic Encryption. The project includes 21 examples across 6 categories, automation tools, and auto-generated documentation."
+"This is the FHEVM Example Hub - a comprehensive collection of standalone examples for building privacy-preserving smart contracts using Fully Homomorphic Encryption. The project includes 24 examples across 6 categories, automation tools, and auto-generated documentation."
 
 ---
 
@@ -26,7 +48,7 @@ Use this script as a guide for recording the demonstration video.
 - Auto-generated documentation
 
 **Say:**
-"The project is organized into clear categories. Each example focuses on a single concept, making it easy to learn and reference. We have examples ranging from basic counter operations to advanced implementations like blind auctions and confidential voting."
+"The project is organized into clear categories. Each example focuses on a single concept, making it easy to learn and reference. We have examples ranging from basic counter operations to advanced implementations like blind auctions, confidential voting, and private escrow."
 
 ---
 
@@ -34,15 +56,16 @@ Use this script as a guide for recording the demonstration video.
 
 **Action:** Open terminal in project directory
 
-**Command:**
+**Commands:**
 ```
-scripts\run-demo.bat
+cd automation-tools
+npx ts-node src/demo-runner.ts
 ```
 
 **Show:** Demo output running
 
 **Say:**
-"Let me run the demo script which showcases all the automation tools. You can see it lists all 21 examples by category, validates their structure, and shows project statistics. We have over 4,600 lines of code across 21 contracts and test files."
+"Let me run the demo script which showcases all the automation tools. You can see it lists all 24 examples by category, validates their structure, and shows project statistics. We have over 5,500 lines of code across 24 contracts and test files."
 
 ---
 
@@ -57,17 +80,35 @@ scripts\run-demo.bat
 - example.json
 
 **Say:**
-"Each example follows a consistent structure. Here's the Simple Counter example. The contract demonstrates basic FHE operations with comprehensive JSDoc documentation. The test file shows how to create encrypted inputs and verify contract behavior. Every example includes a README and metadata file."
+"Each example follows a consistent structure. Here is the Simple Counter example. The contract demonstrates basic FHE operations with comprehensive JSDoc documentation. The test file shows how to create encrypted inputs and verify contract behavior. Every example includes a README and metadata file."
 
 ---
 
-### 5. Create New Example (1 minute)
+### 5. Compile an Example (1 minute)
+
+**Action:** Run compile in an example
+
+**Commands:**
+```
+cd ../examples/simple-counter
+npm install
+npm run compile
+```
+
+**Show:** Successful compilation
+
+**Say:**
+"Each example is a standalone Hardhat project. After installing dependencies, we can compile the contracts. The compilation succeeds, showing our contracts are valid."
+
+---
+
+### 6. Create New Example (1 minute)
 
 **Action:** Run create example command
 
-**Command:**
+**Commands:**
 ```
-cd automation-tools
+cd ../../automation-tools
 npx ts-node src/create-fhevm-example.ts create -n demo-example -c basic -d "Demo example"
 ```
 
@@ -78,7 +119,7 @@ npx ts-node src/create-fhevm-example.ts create -n demo-example -c basic -d "Demo
 
 ---
 
-### 6. Show Documentation Generation (45 seconds)
+### 7. Show Documentation Generation (45 seconds)
 
 **Action:** Run docs generator
 
@@ -94,32 +135,49 @@ npx ts-node src/generate-docs.ts
 
 ---
 
-### 7. Show Visual Tools (1 minute)
+### 8. Show Visual Tools (1 minute)
 
 **Action:** Open `tools/handle-debugger.html` in browser
 
 **Show:**
-- Create a few handles
-- Perform FHE.add operation
+- Create a few handles by clicking "Create euint64"
+- Select two handles (click on them)
+- Click "FHE.add(a, b)" to perform operation
 - Show arrows connecting handles
-- Demonstrate permissions
+- Click "TFHE.allowThis()" to demonstrate permissions
 
 **Say:**
-"We also built a visual handle debugger to help developers understand how encrypted handles work. You can create handles, perform operations, and see how new handles are created. This visualizes the concept that FHE operations create new handles rather than modifying existing ones."
+"We built a visual handle debugger to help developers understand how encrypted handles work. You can create handles, perform operations, and see how new handles are created. This visualizes the concept that FHE operations create new handles rather than modifying existing ones."
 
 **Action:** Open `tools/examples-index.html` in browser
 
 **Show:**
-- Filter by category
+- Filter by category (click "Advanced")
 - Search for "voting"
-- Click on an example
+- Show the cards
 
 **Say:**
-"The interactive examples index makes it easy to browse and filter all examples. You can search by name, description, or concept."
+"The interactive examples index makes it easy to browse and filter all 24 examples. You can search by name, description, or concept."
 
 ---
 
-### 8. Show Validation (30 seconds)
+### 9. Show Gas Benchmarks (30 seconds)
+
+**Action:** Run gas benchmarks
+
+**Command:**
+```
+npx ts-node src/gas-benchmarks.ts
+```
+
+**Show:** Gas costs output
+
+**Say:**
+"We also provide gas benchmarks showing approximate costs for all FHEVM operations. This helps developers optimize their contracts."
+
+---
+
+### 10. Show Validation (30 seconds)
 
 **Action:** Run validator
 
@@ -128,19 +186,19 @@ npx ts-node src/generate-docs.ts
 npx ts-node src/validate-all-examples.ts
 ```
 
-**Show:** All 21 examples passing
+**Show:** All 24 examples passing
 
 **Say:**
-"The validation tool ensures all examples maintain consistent structure. All 21 examples pass validation, confirming they have the required contracts, tests, documentation, and metadata."
+"The validation tool ensures all examples maintain consistent structure. All 24 examples pass validation, confirming they have the required contracts, tests, documentation, and metadata."
 
 ---
 
-### 9. Conclusion (30 seconds)
+### 11. Conclusion (30 seconds)
 
 **Show:** GitHub repository
 
 **Say:**
-"The FHEVM Example Hub provides everything developers need to learn and implement privacy-preserving smart contracts. With 21 comprehensive examples, automation tools, visual debugging, and auto-generated documentation, it serves as a complete learning resource for the FHEVM ecosystem. Thank you for watching."
+"The FHEVM Example Hub provides everything developers need to learn and implement privacy-preserving smart contracts. With 24 comprehensive examples, automation tools, visual debugging, and auto-generated documentation, it serves as a complete learning resource for the FHEVM ecosystem. Thank you for watching."
 
 ---
 
@@ -152,25 +210,29 @@ npx ts-node src/validate-all-examples.ts
 4. **Audio:** Use clear audio, minimize background noise
 5. **Mistakes:** If you make a mistake, pause and restart that section
 
-## Files to Have Open
-
-- GitHub repository page
-- Terminal in project root
-- File explorer at project root
-- Browser with handle-debugger.html ready
-- Browser with examples-index.html ready
-
 ## Commands Summary
 ```bash
+# Setup
+cd automation-tools
+npm install
+
 # Demo runner
-scripts\run-demo.bat
+npx ts-node src/demo-runner.ts
+
+# Compile example
+cd ../examples/simple-counter
+npm install
+npm run compile
 
 # Create example
-cd automation-tools
+cd ../../automation-tools
 npx ts-node src/create-fhevm-example.ts create -n demo-example -c basic -d "Demo example"
 
 # Generate docs
 npx ts-node src/generate-docs.ts
+
+# Gas benchmarks
+npx ts-node src/gas-benchmarks.ts
 
 # Validate
 npx ts-node src/validate-all-examples.ts
