@@ -12,7 +12,18 @@ A comprehensive collection of standalone FHEVM examples with automation tools an
 
 ## Project Structure
 ```
-<img width="1600" height="1088" alt="image" src="https://github.com/user-attachments/assets/31a50d94-c93c-48d3-828c-bb797fc9e676" />
+fhevm-example-hub/
+├── automation-tools/           # TypeScript CLI tools
+│   ├── src/
+│   │   ├── create-fhevm-example.ts    # Scaffold new examples
+│   │   ├── generate-docs.ts           # Generate GitBook docs
+│   │   ├── validate-all-examples.ts   # Validate all examples
+│   │   └── update-dependencies.ts     # Update FHEVM versions
+│   └── package.json
+├── base-template/              # Hardhat template with @fhevm/solidity
+├── examples/                   # 21 standalone example folders
+├── docs/                       # Auto-generated GitBook documentation
+└── scripts/                    # Utility scripts
 
 ```
 
