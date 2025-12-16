@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "fhevm/lib/TFHE.sol";
-import "fhevm/config/ZamaFHEVMConfig.sol";
-import "fhevm/config/ZamaGatewayConfig.sol";
-import "fhevm/gateway/GatewayCaller.sol";
+import "@fhevm/solidity/lib/TFHE.sol";
+import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
+import "@fhevm/solidity/gateway/GatewayCaller.sol";
 
 /**
  * @title SimpleCounter
