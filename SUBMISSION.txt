@@ -1,0 +1,40 @@
+FHEVM Example Hub - Zama Bounty Submission
+==========================================
+
+Project: FHEVM Example Hub
+Author: Ludarep
+Date: December 2025
+
+GitHub Repository:
+https://github.com/rudazy/fhevm-example-hub
+
+Demo Video:
+https://youtu.be/Zjcx5x5b_o8
+
+Description:
+A comprehensive collection of 24 standalone examples for building 
+privacy-preserving smart contracts using Zama FHEVM technology.
+
+What's Included:
+- 24 standalone examples across 6 categories
+- Visual Handle Debugger (interactive HTML tool)
+- Interactive Examples Index
+- Automation tools (CLI, docs generator, validator)
+- Gas benchmarks for all FHEVM operations
+- Auto-generated GitBook documentation
+
+Categories:
+1. Basic (Counter, Arithmetic, Comparisons)
+2. Encryption (Single & Multiple Values)
+3. Decryption (User & Public Decrypt)
+4. Access Control (Permissions, Transient)
+5. Anti-Patterns (Common Mistakes)
+6. Advanced (Blind Auction, Voting, Lottery, Escrow, NFT, ERC7984)
+
+Quick Start:
+git clone https://github.com/rudazy/fhevm-example-hub.git
+cd fhevm-example-hub/examples/simple-counter
+npm install
+npm run compile
+
+Built for developers learning FHEVM - each example focuses on one concept.
