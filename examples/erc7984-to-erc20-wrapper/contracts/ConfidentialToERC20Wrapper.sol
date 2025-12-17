@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
-import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
-import "@fhevm/solidity/gateway/GatewayCaller.sol";
+import "fhevm/lib/TFHE.sol";
+
+
+import "fhevm/gateway/GatewayCaller.sol";
+import "fhevm/gateway/lib/Gateway.sol";
 
 /**
  * @title ConfidentialToERC20Wrapper
@@ -18,7 +19,7 @@ import "@fhevm/solidity/gateway/GatewayCaller.sol";
  * @custom:category advanced
  * @custom:difficulty advanced
  */
-contract ConfidentialToERC20Wrapper is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, GatewayCaller {
+contract ConfidentialToERC20Wrapper is GatewayCaller {
     
     string public name = "Wrapped Confidential Token";
     string public symbol = "WCTKN";
@@ -66,7 +67,7 @@ contract ConfidentialToERC20Wrapper is SepoliaZamaFHEVMConfig, SepoliaZamaGatewa
             encryptedBalances[msg.sender] = encAmount;
         }
         
-        TFHE.allowThis(encryptedBalances[msg.sender]);
+        TFHE.allow(encryptedBalances[msg.sender], address(this));
         TFHE.allow(encryptedBalances[msg.sender], msg.sender);
         
         emit Wrap(msg.sender, amount);
@@ -82,7 +83,7 @@ contract ConfidentialToERC20Wrapper is SepoliaZamaFHEVMConfig, SepoliaZamaGatewa
         
         // Subtract from encrypted balance
         encryptedBalances[msg.sender] = TFHE.sub(encryptedBalances[msg.sender], amount);
-        TFHE.allowThis(encryptedBalances[msg.sender]);
+        TFHE.allow(encryptedBalances[msg.sender], address(this));
         TFHE.allow(encryptedBalances[msg.sender], msg.sender);
         
         // Request decryption

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "fhevm/lib/TFHE.sol";
+
 
 /**
  * @title ConfidentialToken
@@ -16,7 +16,7 @@ import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
  * @custom:category advanced
  * @custom:difficulty advanced
  */
-contract ConfidentialToken is SepoliaZamaFHEVMConfig {
+contract ConfidentialToken {
     
     string public name;
     string public symbol;
@@ -63,7 +63,7 @@ contract ConfidentialToken is SepoliaZamaFHEVMConfig {
             _balances[to] = encAmount;
         }
         
-        TFHE.allowThis(_balances[to]);
+        TFHE.allow(_balances[to], address(this));
         TFHE.allow(_balances[to], to);
         
         totalSupply += amount;
@@ -97,9 +97,9 @@ contract ConfidentialToken is SepoliaZamaFHEVMConfig {
         }
         
         // Update permissions
-        TFHE.allowThis(_balances[msg.sender]);
+        TFHE.allow(_balances[msg.sender], address(this));
         TFHE.allow(_balances[msg.sender], msg.sender);
-        TFHE.allowThis(_balances[to]);
+        TFHE.allow(_balances[to], address(this));
         TFHE.allow(_balances[to], to);
         
         emit Transfer(msg.sender, to);
@@ -122,7 +122,7 @@ contract ConfidentialToken is SepoliaZamaFHEVMConfig {
         euint64 amount = TFHE.asEuint64(encryptedAmount, inputProof);
         _allowances[msg.sender][spender] = amount;
         
-        TFHE.allowThis(amount);
+        TFHE.allow(amount, address(this));
         TFHE.allow(amount, msg.sender);
         TFHE.allow(amount, spender);
         
@@ -161,11 +161,11 @@ contract ConfidentialToken is SepoliaZamaFHEVMConfig {
         }
         
         // Update permissions
-        TFHE.allowThis(_balances[from]);
+        TFHE.allow(_balances[from], address(this));
         TFHE.allow(_balances[from], from);
-        TFHE.allowThis(_balances[to]);
+        TFHE.allow(_balances[to], address(this));
         TFHE.allow(_balances[to], to);
-        TFHE.allowThis(_allowances[from][msg.sender]);
+        TFHE.allow(_allowances[from][msg.sender], address(this));
         TFHE.allow(_allowances[from][msg.sender], from);
         TFHE.allow(_allowances[from][msg.sender], msg.sender);
         

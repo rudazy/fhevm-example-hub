@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "fhevm/lib/TFHE.sol";
+
 
 /**
  * @title EncryptSingleValue
@@ -17,7 +17,7 @@ import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
  * @custom:category encryption
  * @custom:difficulty beginner
  */
-contract EncryptSingleValue is SepoliaZamaFHEVMConfig {
+contract EncryptSingleValue {
     
     /// @notice Mapping of user addresses to their encrypted secret
     mapping(address => euint64) private userSecrets;
@@ -38,7 +38,7 @@ contract EncryptSingleValue is SepoliaZamaFHEVMConfig {
         userSecrets[msg.sender] = secret;
         
         // Allow the contract to operate on this value
-        TFHE.allowThis(secret);
+        TFHE.allow(secret, address(this));
         
         // Allow the user to access their own secret
         TFHE.allow(secret, msg.sender);

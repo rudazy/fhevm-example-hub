@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "fhevm/lib/TFHE.sol";
+
 
 /**
  * @title AccessControlBasics
@@ -16,7 +16,7 @@ import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
  * @custom:category access-control
  * @custom:difficulty beginner
  */
-contract AccessControlBasics is SepoliaZamaFHEVMConfig {
+contract AccessControlBasics {
     
     euint64 private secretValue;
     address public owner;
@@ -29,7 +29,7 @@ contract AccessControlBasics is SepoliaZamaFHEVMConfig {
     constructor() {
         owner = msg.sender;
         secretValue = TFHE.asEuint64(0);
-        TFHE.allowThis(secretValue);
+        TFHE.allow(secretValue, address(this));
         TFHE.allow(secretValue, owner);
     }
 
@@ -43,7 +43,7 @@ contract AccessControlBasics is SepoliaZamaFHEVMConfig {
      */
     function setSecret(einput encryptedValue, bytes calldata inputProof) external onlyOwner {
         secretValue = TFHE.asEuint64(encryptedValue, inputProof);
-        TFHE.allowThis(secretValue);
+        TFHE.allow(secretValue, address(this));
         TFHE.allow(secretValue, owner);
         emit SecretUpdated(msg.sender);
     }

@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "fhevm/lib/TFHE.sol";
+
 
 /**
  * @title AccessControlTransient
@@ -15,7 +15,7 @@ import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
  * @custom:category access-control
  * @custom:difficulty intermediate
  */
-contract AccessControlTransient is SepoliaZamaFHEVMConfig {
+contract AccessControlTransient {
     
     mapping(address => euint64) private balances;
     
@@ -34,7 +34,7 @@ contract AccessControlTransient is SepoliaZamaFHEVMConfig {
             balances[msg.sender] = depositAmount;
         }
         
-        TFHE.allowThis(balances[msg.sender]);
+        TFHE.allow(balances[msg.sender], address(this));
         TFHE.allow(balances[msg.sender], msg.sender);
         
         emit Deposit(msg.sender);
@@ -57,9 +57,9 @@ contract AccessControlTransient is SepoliaZamaFHEVMConfig {
             balances[to] = transferAmount;
         }
         
-        TFHE.allowThis(balances[msg.sender]);
+        TFHE.allow(balances[msg.sender], address(this));
         TFHE.allow(balances[msg.sender], msg.sender);
-        TFHE.allowThis(balances[to]);
+        TFHE.allow(balances[to], address(this));
         TFHE.allow(balances[to], to);
         
         // Grant transient access to recipient for this transaction only

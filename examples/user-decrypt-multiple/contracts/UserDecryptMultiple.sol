@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
-import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
-import "@fhevm/solidity/gateway/GatewayCaller.sol";
+import "fhevm/lib/TFHE.sol";
+
+
+import "fhevm/gateway/GatewayCaller.sol";
+import "fhevm/gateway/lib/Gateway.sol";
 
 /**
  * @title UserDecryptMultiple
@@ -18,7 +19,7 @@ import "@fhevm/solidity/gateway/GatewayCaller.sol";
  * @custom:category decryption
  * @custom:difficulty intermediate
  */
-contract UserDecryptMultiple is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, GatewayCaller {
+contract UserDecryptMultiple is GatewayCaller {
     
     struct EncryptedStats {
         euint64 health;
@@ -47,9 +48,9 @@ contract UserDecryptMultiple is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig
         
         userStats[msg.sender] = EncryptedStats(health, attack, defense);
         
-        TFHE.allowThis(health);
-        TFHE.allowThis(attack);
-        TFHE.allowThis(defense);
+        TFHE.allow(health, address(this));
+        TFHE.allow(attack, address(this));
+        TFHE.allow(defense, address(this));
         TFHE.allow(health, msg.sender);
         TFHE.allow(attack, msg.sender);
         TFHE.allow(defense, msg.sender);

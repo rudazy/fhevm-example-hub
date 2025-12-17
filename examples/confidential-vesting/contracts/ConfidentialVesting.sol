@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
-import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
-import "@fhevm/solidity/gateway/GatewayCaller.sol";
+import "fhevm/lib/TFHE.sol";
+
+
+import "fhevm/gateway/GatewayCaller.sol";
+import "fhevm/gateway/lib/Gateway.sol";
 
 /**
  * @title ConfidentialVesting
@@ -18,7 +19,7 @@ import "@fhevm/solidity/gateway/GatewayCaller.sol";
  * @custom:category advanced
  * @custom:difficulty advanced
  */
-contract ConfidentialVesting is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, GatewayCaller {
+contract ConfidentialVesting is GatewayCaller {
     
     struct VestingSchedule {
         euint64 totalAmount;
@@ -71,9 +72,9 @@ contract ConfidentialVesting is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig
             exists: true
         });
         
-        TFHE.allowThis(amount);
+        TFHE.allow(amount, address(this));
         TFHE.allow(amount, beneficiary);
-        TFHE.allowThis(vestingSchedules[beneficiary].releasedAmount);
+        TFHE.allow(vestingSchedules[beneficiary].releasedAmount, address(this));
         TFHE.allow(vestingSchedules[beneficiary].releasedAmount, beneficiary);
         
         emit VestingCreated(beneficiary, block.timestamp, duration);
@@ -117,9 +118,9 @@ contract ConfidentialVesting is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig
         
         schedule.releasedAmount = vested;
         
-        TFHE.allowThis(schedule.releasedAmount);
+        TFHE.allow(schedule.releasedAmount, address(this));
         TFHE.allow(schedule.releasedAmount, msg.sender);
-        TFHE.allowThis(releasable);
+        TFHE.allow(releasable, address(this));
         TFHE.allow(releasable, msg.sender);
         
         emit TokensReleased(msg.sender);

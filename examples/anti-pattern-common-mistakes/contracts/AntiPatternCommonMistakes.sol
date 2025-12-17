@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "fhevm/lib/TFHE.sol";
+
 
 /**
  * @title AntiPatternCommonMistakes
@@ -13,7 +13,7 @@ import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
  * @custom:category anti-patterns
  * @custom:difficulty intermediate
  */
-contract AntiPatternCommonMistakes is SepoliaZamaFHEVMConfig {
+contract AntiPatternCommonMistakes {
     
     euint64 private value1;
     euint64 private value2;
@@ -47,7 +47,7 @@ contract AntiPatternCommonMistakes is SepoliaZamaFHEVMConfig {
         euint64 threshold = TFHE.asEuint64(100);
         
         ebool result = TFHE.gt(encrypted, threshold);
-        TFHE.allowThis(result);
+        TFHE.allow(result, address(this));
         TFHE.allow(result, msg.sender);
         
         return result;
@@ -64,8 +64,8 @@ contract AntiPatternCommonMistakes is SepoliaZamaFHEVMConfig {
         euint64 encA = TFHE.asEuint64(a, proofA);
         euint64 encB = TFHE.asEuint64(b, proofB);
         
-        TFHE.allowThis(encA);
-        TFHE.allowThis(encB);
+        TFHE.allow(encA, address(this));
+        TFHE.allow(encB, address(this));
         
         // This creates a NEW handle
         value1 = TFHE.add(encA, encB);
@@ -85,7 +85,7 @@ contract AntiPatternCommonMistakes is SepoliaZamaFHEVMConfig {
         value2 = TFHE.add(encA, encB);
         
         // CORRECT: Apply permissions to the new handle
-        TFHE.allowThis(value2);
+        TFHE.allow(value2, address(this));
         TFHE.allow(value2, msg.sender);
     }
 
@@ -107,7 +107,7 @@ contract AntiPatternCommonMistakes is SepoliaZamaFHEVMConfig {
     function correctZeroCheck() external returns (ebool) {
         euint64 zero = TFHE.asEuint64(0);
         ebool result = TFHE.ne(value2, zero);
-        TFHE.allowThis(result);
+        TFHE.allow(result, address(this));
         TFHE.allow(result, msg.sender);
         return result;
     }

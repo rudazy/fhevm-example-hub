@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
-import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
-import "@fhevm/solidity/gateway/GatewayCaller.sol";
+import "fhevm/lib/TFHE.sol";
+
+
+import "fhevm/gateway/GatewayCaller.sol";
+import "fhevm/gateway/lib/Gateway.sol";
 
 /**
  * @title ConfidentialNFT
@@ -18,7 +19,7 @@ import "@fhevm/solidity/gateway/GatewayCaller.sol";
  * @custom:category advanced
  * @custom:difficulty advanced
  */
-contract ConfidentialNFT is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, GatewayCaller {
+contract ConfidentialNFT is GatewayCaller {
     
     struct NFTMetadata {
         euint64 rarity;      // 1-100 rarity score
@@ -79,9 +80,9 @@ contract ConfidentialNFT is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, Ga
         });
         
         // Set permissions
-        TFHE.allowThis(rarity);
-        TFHE.allowThis(power);
-        TFHE.allowThis(secretCode);
+        TFHE.allow(rarity, address(this));
+        TFHE.allow(power, address(this));
+        TFHE.allow(secretCode, address(this));
         TFHE.allow(rarity, to);
         TFHE.allow(power, to);
         TFHE.allow(secretCode, to);

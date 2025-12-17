@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
-import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
-import "@fhevm/solidity/gateway/GatewayCaller.sol";
+import "fhevm/lib/TFHE.sol";
+
+
+import "fhevm/gateway/GatewayCaller.sol";
+import "fhevm/gateway/lib/Gateway.sol";
 
 /**
  * @title PrivateEscrow
@@ -18,7 +19,7 @@ import "@fhevm/solidity/gateway/GatewayCaller.sol";
  * @custom:category advanced
  * @custom:difficulty advanced
  */
-contract PrivateEscrow is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, GatewayCaller {
+contract PrivateEscrow is GatewayCaller {
     
     enum EscrowState { Created, Funded, Released, Refunded, Disputed }
     
@@ -83,7 +84,7 @@ contract PrivateEscrow is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, Gate
         escrow.amount = TFHE.asEuint64(encAmount, proof);
         escrow.state = EscrowState.Funded;
         
-        TFHE.allowThis(escrow.amount);
+        TFHE.allow(escrow.amount, address(this));
         TFHE.allow(escrow.amount, escrow.buyer);
         TFHE.allow(escrow.amount, escrow.seller);
         TFHE.allow(escrow.amount, escrow.arbiter);

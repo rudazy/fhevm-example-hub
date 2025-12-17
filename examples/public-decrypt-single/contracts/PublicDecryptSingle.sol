@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
-import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
-import "@fhevm/solidity/gateway/GatewayCaller.sol";
+import "fhevm/lib/TFHE.sol";
+
+
+import "fhevm/gateway/GatewayCaller.sol";
+import "fhevm/gateway/lib/Gateway.sol";
 
 /**
  * @title PublicDecryptSingle
@@ -18,7 +19,7 @@ import "@fhevm/solidity/gateway/GatewayCaller.sol";
  * @custom:category decryption
  * @custom:difficulty intermediate
  */
-contract PublicDecryptSingle is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, GatewayCaller {
+contract PublicDecryptSingle is GatewayCaller {
     
     euint64 private encryptedTotal;
     uint64 public decryptedTotal;
@@ -32,7 +33,7 @@ contract PublicDecryptSingle is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig
     constructor() {
         owner = msg.sender;
         encryptedTotal = TFHE.asEuint64(0);
-        TFHE.allowThis(encryptedTotal);
+        TFHE.allow(encryptedTotal, address(this));
     }
 
     modifier onlyOwner() {
@@ -46,7 +47,7 @@ contract PublicDecryptSingle is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig
     function addContribution(einput encryptedAmount, bytes calldata inputProof) external {
         euint64 amount = TFHE.asEuint64(encryptedAmount, inputProof);
         encryptedTotal = TFHE.add(encryptedTotal, amount);
-        TFHE.allowThis(encryptedTotal);
+        TFHE.allow(encryptedTotal, address(this));
         emit ContributionAdded(msg.sender);
     }
 

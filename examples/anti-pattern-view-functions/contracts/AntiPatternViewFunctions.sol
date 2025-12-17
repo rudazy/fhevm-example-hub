@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "fhevm/lib/TFHE.sol";
+
 
 /**
  * @title AntiPatternViewFunctions
@@ -18,7 +18,7 @@ import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
  * @custom:category anti-patterns
  * @custom:difficulty beginner
  */
-contract AntiPatternViewFunctions is SepoliaZamaFHEVMConfig {
+contract AntiPatternViewFunctions {
     
     euint64 private secretBalance;
     address public owner;
@@ -26,7 +26,7 @@ contract AntiPatternViewFunctions is SepoliaZamaFHEVMConfig {
     constructor() {
         owner = msg.sender;
         secretBalance = TFHE.asEuint64(1000);
-        TFHE.allowThis(secretBalance);
+        TFHE.allow(secretBalance, address(this));
         TFHE.allow(secretBalance, owner);
     }
 
@@ -59,7 +59,7 @@ contract AntiPatternViewFunctions is SepoliaZamaFHEVMConfig {
     function setBalance(einput newBalance, bytes calldata proof) external {
         require(msg.sender == owner, "Only owner");
         secretBalance = TFHE.asEuint64(newBalance, proof);
-        TFHE.allowThis(secretBalance);
+        TFHE.allow(secretBalance, address(this));
         TFHE.allow(secretBalance, owner);
     }
 }

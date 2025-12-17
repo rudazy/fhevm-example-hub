@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "fhevm/lib/TFHE.sol";
+
 
 /**
  * @title EqualityComparison
@@ -16,7 +16,7 @@ import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
  * @custom:category basic
  * @custom:difficulty beginner
  */
-contract EqualityComparison is SepoliaZamaFHEVMConfig {
+contract EqualityComparison {
     
     ebool private lastComparisonResult;
     address public owner;
@@ -35,7 +35,7 @@ contract EqualityComparison is SepoliaZamaFHEVMConfig {
         euint64 encA = TFHE.asEuint64(a, aProof);
         euint64 encB = TFHE.asEuint64(b, bProof);
         lastComparisonResult = TFHE.eq(encA, encB);
-        TFHE.allowThis(lastComparisonResult);
+        TFHE.allow(lastComparisonResult, address(this));
         TFHE.allow(lastComparisonResult, owner);
     }
 
@@ -49,7 +49,7 @@ contract EqualityComparison is SepoliaZamaFHEVMConfig {
         euint64 encA = TFHE.asEuint64(a, aProof);
         euint64 encB = TFHE.asEuint64(b, bProof);
         lastComparisonResult = TFHE.ne(encA, encB);
-        TFHE.allowThis(lastComparisonResult);
+        TFHE.allow(lastComparisonResult, address(this));
         TFHE.allow(lastComparisonResult, owner);
     }
 
@@ -63,7 +63,7 @@ contract EqualityComparison is SepoliaZamaFHEVMConfig {
         euint64 encA = TFHE.asEuint64(a, aProof);
         euint64 encB = TFHE.asEuint64(b, bProof);
         lastComparisonResult = TFHE.gt(encA, encB);
-        TFHE.allowThis(lastComparisonResult);
+        TFHE.allow(lastComparisonResult, address(this));
         TFHE.allow(lastComparisonResult, owner);
     }
 
@@ -77,7 +77,7 @@ contract EqualityComparison is SepoliaZamaFHEVMConfig {
         euint64 encA = TFHE.asEuint64(a, aProof);
         euint64 encB = TFHE.asEuint64(b, bProof);
         lastComparisonResult = TFHE.lt(encA, encB);
-        TFHE.allowThis(lastComparisonResult);
+        TFHE.allow(lastComparisonResult, address(this));
         TFHE.allow(lastComparisonResult, owner);
     }
 
@@ -91,7 +91,7 @@ contract EqualityComparison is SepoliaZamaFHEVMConfig {
         euint64 encA = TFHE.asEuint64(a, aProof);
         euint64 encB = TFHE.asEuint64(b, bProof);
         lastComparisonResult = TFHE.ge(encA, encB);
-        TFHE.allowThis(lastComparisonResult);
+        TFHE.allow(lastComparisonResult, address(this));
         TFHE.allow(lastComparisonResult, owner);
     }
 
@@ -105,7 +105,7 @@ contract EqualityComparison is SepoliaZamaFHEVMConfig {
         euint64 encA = TFHE.asEuint64(a, aProof);
         euint64 encB = TFHE.asEuint64(b, bProof);
         lastComparisonResult = TFHE.le(encA, encB);
-        TFHE.allowThis(lastComparisonResult);
+        TFHE.allow(lastComparisonResult, address(this));
         TFHE.allow(lastComparisonResult, owner);
     }
 

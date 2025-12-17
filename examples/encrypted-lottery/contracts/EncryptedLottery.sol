@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
-import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
-import "@fhevm/solidity/gateway/GatewayCaller.sol";
+import "fhevm/lib/TFHE.sol";
+
+
+import "fhevm/gateway/GatewayCaller.sol";
+import "fhevm/gateway/lib/Gateway.sol";
 
 /**
  * @title EncryptedLottery
@@ -18,7 +19,7 @@ import "@fhevm/solidity/gateway/GatewayCaller.sol";
  * @custom:category advanced
  * @custom:difficulty advanced
  */
-contract EncryptedLottery is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, GatewayCaller {
+contract EncryptedLottery is GatewayCaller {
     
     address public operator;
     uint256 public ticketPrice;
@@ -77,7 +78,7 @@ contract EncryptedLottery is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, G
         hasTicket[msg.sender] = true;
         participants.push(msg.sender);
         
-        TFHE.allowThis(number);
+        TFHE.allow(number, address(this));
         TFHE.allow(number, msg.sender);
         
         emit TicketPurchased(msg.sender);
@@ -92,7 +93,7 @@ contract EncryptedLottery is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, G
         require(!drawn, "Already drawn");
         
         winningNumber = TFHE.asEuint64(encryptedWinning, proof);
-        TFHE.allowThis(winningNumber);
+        TFHE.allow(winningNumber, address(this));
         drawn = true;
         
         emit LotteryDrawn();

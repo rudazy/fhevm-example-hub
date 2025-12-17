@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "fhevm/lib/TFHE.sol";
+
 
 /**
  * @title ArithmeticOperations
@@ -17,7 +17,7 @@ import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
  * @custom:category basic
  * @custom:difficulty beginner
  */
-contract ArithmeticOperations is SepoliaZamaFHEVMConfig {
+contract ArithmeticOperations {
     
     euint64 private result;
     address public owner;
@@ -25,7 +25,7 @@ contract ArithmeticOperations is SepoliaZamaFHEVMConfig {
     constructor() {
         owner = msg.sender;
         result = TFHE.asEuint64(0);
-        TFHE.allowThis(result);
+        TFHE.allow(result, address(this));
         TFHE.allow(result, owner);
     }
 
@@ -43,7 +43,7 @@ contract ArithmeticOperations is SepoliaZamaFHEVMConfig {
         euint64 encA = TFHE.asEuint64(a, aProof);
         euint64 encB = TFHE.asEuint64(b, bProof);
         result = TFHE.add(encA, encB);
-        TFHE.allowThis(result);
+        TFHE.allow(result, address(this));
         TFHE.allow(result, owner);
     }
 
@@ -57,7 +57,7 @@ contract ArithmeticOperations is SepoliaZamaFHEVMConfig {
         euint64 encA = TFHE.asEuint64(a, aProof);
         euint64 encB = TFHE.asEuint64(b, bProof);
         result = TFHE.sub(encA, encB);
-        TFHE.allowThis(result);
+        TFHE.allow(result, address(this));
         TFHE.allow(result, owner);
     }
 
@@ -71,7 +71,7 @@ contract ArithmeticOperations is SepoliaZamaFHEVMConfig {
         euint64 encA = TFHE.asEuint64(a, aProof);
         euint64 encB = TFHE.asEuint64(b, bProof);
         result = TFHE.mul(encA, encB);
-        TFHE.allowThis(result);
+        TFHE.allow(result, address(this));
         TFHE.allow(result, owner);
     }
 
@@ -85,7 +85,7 @@ contract ArithmeticOperations is SepoliaZamaFHEVMConfig {
         euint64 encA = TFHE.asEuint64(a, aProof);
         euint64 encB = TFHE.asEuint64(b, bProof);
         result = TFHE.div(encA, encB);
-        TFHE.allowThis(result);
+        TFHE.allow(result, address(this));
         TFHE.allow(result, owner);
     }
 

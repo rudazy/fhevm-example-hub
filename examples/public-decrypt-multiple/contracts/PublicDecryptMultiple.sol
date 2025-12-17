@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
-import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
-import "@fhevm/solidity/gateway/GatewayCaller.sol";
+import "fhevm/lib/TFHE.sol";
+
+
+import "fhevm/gateway/GatewayCaller.sol";
+import "fhevm/gateway/lib/Gateway.sol";
 
 /**
  * @title PublicDecryptMultiple
@@ -18,7 +19,7 @@ import "@fhevm/solidity/gateway/GatewayCaller.sol";
  * @custom:category decryption
  * @custom:difficulty advanced
  */
-contract PublicDecryptMultiple is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, GatewayCaller {
+contract PublicDecryptMultiple is GatewayCaller {
     
     euint64 private encryptedVotesA;
     euint64 private encryptedVotesB;
@@ -40,9 +41,9 @@ contract PublicDecryptMultiple is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConf
         encryptedVotesA = TFHE.asEuint64(0);
         encryptedVotesB = TFHE.asEuint64(0);
         encryptedVotesC = TFHE.asEuint64(0);
-        TFHE.allowThis(encryptedVotesA);
-        TFHE.allowThis(encryptedVotesB);
-        TFHE.allowThis(encryptedVotesC);
+        TFHE.allow(encryptedVotesA, address(this));
+        TFHE.allow(encryptedVotesB, address(this));
+        TFHE.allow(encryptedVotesC, address(this));
     }
 
     modifier onlyOwner() {
@@ -69,9 +70,9 @@ contract PublicDecryptMultiple is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConf
         encryptedVotesB = TFHE.add(encryptedVotesB, TFHE.select(isB, one, zero));
         encryptedVotesC = TFHE.add(encryptedVotesC, TFHE.select(isC, one, zero));
         
-        TFHE.allowThis(encryptedVotesA);
-        TFHE.allowThis(encryptedVotesB);
-        TFHE.allowThis(encryptedVotesC);
+        TFHE.allow(encryptedVotesA, address(this));
+        TFHE.allow(encryptedVotesB, address(this));
+        TFHE.allow(encryptedVotesC, address(this));
         
         emit VoteCast(msg.sender);
     }

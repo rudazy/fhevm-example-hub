@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "fhevm/lib/TFHE.sol";
+
 
 /**
  * @title InputProofsExplained
@@ -16,7 +16,7 @@ import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
  * @custom:category access-control
  * @custom:difficulty intermediate
  */
-contract InputProofsExplained is SepoliaZamaFHEVMConfig {
+contract InputProofsExplained {
     
     mapping(address => euint64) private deposits;
     uint256 public totalDepositors;
@@ -40,7 +40,7 @@ contract InputProofsExplained is SepoliaZamaFHEVMConfig {
             deposits[msg.sender] = amount;
         }
         
-        TFHE.allowThis(deposits[msg.sender]);
+        TFHE.allow(deposits[msg.sender], address(this));
         TFHE.allow(deposits[msg.sender], msg.sender);
         
         emit DepositMade(msg.sender);
@@ -55,7 +55,7 @@ contract InputProofsExplained is SepoliaZamaFHEVMConfig {
         euint64 amount = TFHE.asEuint64(encryptedAmount, inputProof);
         deposits[msg.sender] = TFHE.sub(deposits[msg.sender], amount);
         
-        TFHE.allowThis(deposits[msg.sender]);
+        TFHE.allow(deposits[msg.sender], address(this));
         TFHE.allow(deposits[msg.sender], msg.sender);
         
         emit WithdrawalMade(msg.sender);

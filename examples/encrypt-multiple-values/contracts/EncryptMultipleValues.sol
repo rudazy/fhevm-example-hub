@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "fhevm/lib/TFHE.sol";
+
 
 /**
  * @title EncryptMultipleValues
@@ -16,7 +16,7 @@ import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
  * @custom:category encryption
  * @custom:difficulty intermediate
  */
-contract EncryptMultipleValues is SepoliaZamaFHEVMConfig {
+contract EncryptMultipleValues {
     
     struct EncryptedCoordinates {
         euint64 x;
@@ -49,9 +49,9 @@ contract EncryptMultipleValues is SepoliaZamaFHEVMConfig {
         userCoordinates[msg.sender] = EncryptedCoordinates(x, y, z);
         
         // Set permissions for all values
-        TFHE.allowThis(x);
-        TFHE.allowThis(y);
-        TFHE.allowThis(z);
+        TFHE.allow(x, address(this));
+        TFHE.allow(y, address(this));
+        TFHE.allow(z, address(this));
         TFHE.allow(x, msg.sender);
         TFHE.allow(y, msg.sender);
         TFHE.allow(z, msg.sender);

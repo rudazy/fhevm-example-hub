@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "fhevm/lib/TFHE.sol";
+
 
 /**
  * @title HandleLifecycle
@@ -17,7 +17,7 @@ import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
  * @custom:category advanced
  * @custom:difficulty intermediate
  */
-contract HandleLifecycle is SepoliaZamaFHEVMConfig {
+contract HandleLifecycle {
     
     // Storage slots for demonstrating handle persistence
     euint64 public handle1;
@@ -43,7 +43,7 @@ contract HandleLifecycle is SepoliaZamaFHEVMConfig {
         handle1 = TFHE.asEuint64(encValue, proof);
         
         // Handle must be permissioned immediately
-        TFHE.allowThis(handle1);
+        TFHE.allow(handle1, address(this));
         TFHE.allow(handle1, owner);
         
         emit HandleCreated("Created from encrypted input", euint64.unwrap(handle1));
@@ -57,7 +57,7 @@ contract HandleLifecycle is SepoliaZamaFHEVMConfig {
         // New handle created from plaintext
         handle2 = TFHE.asEuint64(plainValue);
         
-        TFHE.allowThis(handle2);
+        TFHE.allow(handle2, address(this));
         TFHE.allow(handle2, owner);
         
         emit HandleCreated("Created from plaintext", euint64.unwrap(handle2));
@@ -77,7 +77,7 @@ contract HandleLifecycle is SepoliaZamaFHEVMConfig {
         
         // The new handle needs its own permissions
         // Permissions from handle1 and handle2 do NOT transfer
-        TFHE.allowThis(handle3);
+        TFHE.allow(handle3, address(this));
         TFHE.allow(handle3, owner);
         
         emit OperationPerformed("add(handle1, handle2)", euint64.unwrap(handle3));
@@ -93,7 +93,7 @@ contract HandleLifecycle is SepoliaZamaFHEVMConfig {
         // Old handle1 is now orphaned (still exists but no longer referenced)
         handle1 = TFHE.asEuint64(newValue, proof);
         
-        TFHE.allowThis(handle1);
+        TFHE.allow(handle1, address(this));
         TFHE.allow(handle1, owner);
         
         emit HandleCreated("Overwrote handle1", euint64.unwrap(handle1));
@@ -114,7 +114,7 @@ contract HandleLifecycle is SepoliaZamaFHEVMConfig {
         
         // Only permission the final result
         handle1 = temp3;
-        TFHE.allowThis(handle1);
+        TFHE.allow(handle1, address(this));
         TFHE.allow(handle1, owner);
         
         // temp1 and temp2 are intermediate handles - not stored

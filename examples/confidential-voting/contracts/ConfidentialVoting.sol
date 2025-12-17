@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
-import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
-import "@fhevm/solidity/gateway/GatewayCaller.sol";
+import "fhevm/lib/TFHE.sol";
+
+
+import "fhevm/gateway/GatewayCaller.sol";
+import "fhevm/gateway/lib/Gateway.sol";
 
 /**
  * @title ConfidentialVoting
@@ -18,7 +19,7 @@ import "@fhevm/solidity/gateway/GatewayCaller.sol";
  * @custom:category advanced
  * @custom:difficulty advanced
  */
-contract ConfidentialVoting is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, GatewayCaller {
+contract ConfidentialVoting is GatewayCaller {
     
     struct Proposal {
         string description;
@@ -70,8 +71,8 @@ contract ConfidentialVoting is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig,
         proposals[proposalId].noVotes = TFHE.asEuint64(0);
         proposals[proposalId].exists = true;
         
-        TFHE.allowThis(proposals[proposalId].yesVotes);
-        TFHE.allowThis(proposals[proposalId].noVotes);
+        TFHE.allow(proposals[proposalId].yesVotes, address(this));
+        TFHE.allow(proposals[proposalId].noVotes, address(this));
         
         emit ProposalCreated(proposalId, description);
         return proposalId;
@@ -105,8 +106,8 @@ contract ConfidentialVoting is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig,
         proposals[proposalId].yesVotes = TFHE.add(proposals[proposalId].yesVotes, yesIncrement);
         proposals[proposalId].noVotes = TFHE.add(proposals[proposalId].noVotes, noIncrement);
         
-        TFHE.allowThis(proposals[proposalId].yesVotes);
-        TFHE.allowThis(proposals[proposalId].noVotes);
+        TFHE.allow(proposals[proposalId].yesVotes, address(this));
+        TFHE.allow(proposals[proposalId].noVotes, address(this));
         
         emit VoteCast(proposalId, msg.sender);
     }

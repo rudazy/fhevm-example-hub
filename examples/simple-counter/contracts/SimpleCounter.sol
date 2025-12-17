@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
-import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
-import "@fhevm/solidity/gateway/GatewayCaller.sol";
+import "fhevm/lib/TFHE.sol";
+
+
+import "fhevm/gateway/GatewayCaller.sol";
+import "fhevm/gateway/lib/Gateway.sol";
 
 /**
  * @title SimpleCounter
@@ -19,7 +20,7 @@ import "@fhevm/solidity/gateway/GatewayCaller.sol";
  * @custom:category basic
  * @custom:difficulty beginner
  */
-contract SimpleCounter is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, GatewayCaller {
+contract SimpleCounter is GatewayCaller {
     
     /// @notice The encrypted counter value
     euint64 private counter;
@@ -55,7 +56,7 @@ contract SimpleCounter is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, Gate
         // Initialize counter to encrypted 0
         counter = TFHE.asEuint64(0);
         // Allow this contract to use the counter value
-        TFHE.allowThis(counter);
+        TFHE.allow(counter, address(this));
         // Allow owner to access the counter
         TFHE.allow(counter, owner);
     }
@@ -72,7 +73,7 @@ contract SimpleCounter is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, Gate
         // Perform encrypted addition
         counter = TFHE.add(counter, amount);
         // Update permissions for the new counter value
-        TFHE.allowThis(counter);
+        TFHE.allow(counter, address(this));
         TFHE.allow(counter, owner);
         
         emit CounterIncremented(msg.sender);
@@ -84,7 +85,7 @@ contract SimpleCounter is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, Gate
      */
     function incrementByOne() external {
         counter = TFHE.add(counter, TFHE.asEuint64(1));
-        TFHE.allowThis(counter);
+        TFHE.allow(counter, address(this));
         TFHE.allow(counter, owner);
         
         emit CounterIncremented(msg.sender);
@@ -99,7 +100,7 @@ contract SimpleCounter is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, Gate
     function decrement(einput encryptedAmount, bytes calldata inputProof) external {
         euint64 amount = TFHE.asEuint64(encryptedAmount, inputProof);
         counter = TFHE.sub(counter, amount);
-        TFHE.allowThis(counter);
+        TFHE.allow(counter, address(this));
         TFHE.allow(counter, owner);
         
         emit CounterDecremented(msg.sender);
@@ -111,7 +112,7 @@ contract SimpleCounter is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, Gate
      */
     function decrementByOne() external {
         counter = TFHE.sub(counter, TFHE.asEuint64(1));
-        TFHE.allowThis(counter);
+        TFHE.allow(counter, address(this));
         TFHE.allow(counter, owner);
         
         emit CounterDecremented(msg.sender);
@@ -123,7 +124,7 @@ contract SimpleCounter is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, Gate
      */
     function reset() external onlyOwner {
         counter = TFHE.asEuint64(0);
-        TFHE.allowThis(counter);
+        TFHE.allow(counter, address(this));
         TFHE.allow(counter, owner);
         
         emit CounterReset(msg.sender);

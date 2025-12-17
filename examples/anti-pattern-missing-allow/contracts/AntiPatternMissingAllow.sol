@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
+import "fhevm/lib/TFHE.sol";
+
 
 /**
  * @title AntiPatternMissingAllow
@@ -18,7 +18,7 @@ import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
  * @custom:category anti-patterns
  * @custom:difficulty beginner
  */
-contract AntiPatternMissingAllow is SepoliaZamaFHEVMConfig {
+contract AntiPatternMissingAllow {
     
     euint64 private correctlyPermissioned;
     euint64 private missingContractPermission;
@@ -37,7 +37,7 @@ contract AntiPatternMissingAllow is SepoliaZamaFHEVMConfig {
         correctlyPermissioned = TFHE.asEuint64(value, proof);
         
         // Allow contract to operate on this value
-        TFHE.allowThis(correctlyPermissioned);
+        TFHE.allow(correctlyPermissioned, address(this));
         
         // Allow the user to access this value
         TFHE.allow(correctlyPermissioned, msg.sender);
@@ -63,7 +63,7 @@ contract AntiPatternMissingAllow is SepoliaZamaFHEVMConfig {
     function storeMissingUserAllow(einput value, bytes calldata proof) external {
         missingUserPermission = TFHE.asEuint64(value, proof);
         
-        TFHE.allowThis(missingUserPermission);
+        TFHE.allow(missingUserPermission, address(this));
         
         // OOPS! Forgot TFHE.allow(value, msg.sender)
         // The user cannot access this value for re-encryption
@@ -75,7 +75,7 @@ contract AntiPatternMissingAllow is SepoliaZamaFHEVMConfig {
     function addToCorrect(einput value, bytes calldata proof) external {
         euint64 toAdd = TFHE.asEuint64(value, proof);
         correctlyPermissioned = TFHE.add(correctlyPermissioned, toAdd);
-        TFHE.allowThis(correctlyPermissioned);
+        TFHE.allow(correctlyPermissioned, address(this));
         TFHE.allow(correctlyPermissioned, msg.sender);
     }
 
@@ -115,7 +115,7 @@ contract AntiPatternMissingAllow is SepoliaZamaFHEVMConfig {
 /**
  * LESSON LEARNED:
  * ===============
- * 1. ALWAYS call TFHE.allowThis(value) after creating/modifying encrypted values
+ * 1. ALWAYS call TFHE.allow(value, address(this)) after creating/modifying encrypted values
  * 2. ALWAYS call TFHE.allow(value, user) for users who need access
  * 3. Permissions must be re-applied after any operation that creates a new handle
  * 4. TFHE.add(), TFHE.sub(), etc. create NEW handles - permissions don't carry over

@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
-import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
-import "@fhevm/solidity/gateway/GatewayCaller.sol";
+import "fhevm/lib/TFHE.sol";
+
+
+import "fhevm/gateway/GatewayCaller.sol";
+import "fhevm/gateway/lib/Gateway.sol";
 
 /**
  * @title UserDecryptSingle
@@ -18,7 +19,7 @@ import "@fhevm/solidity/gateway/GatewayCaller.sol";
  * @custom:category decryption
  * @custom:difficulty intermediate
  */
-contract UserDecryptSingle is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, GatewayCaller {
+contract UserDecryptSingle is GatewayCaller {
     
     mapping(address => euint64) private userBalances;
     mapping(uint256 => address) private requestToUser;
@@ -33,7 +34,7 @@ contract UserDecryptSingle is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, 
     function storeBalance(einput encryptedBalance, bytes calldata inputProof) external {
         euint64 balance = TFHE.asEuint64(encryptedBalance, inputProof);
         userBalances[msg.sender] = balance;
-        TFHE.allowThis(balance);
+        TFHE.allow(balance, address(this));
         TFHE.allow(balance, msg.sender);
         emit BalanceStored(msg.sender);
     }

@@ -2,7 +2,7 @@ import * as fs from 'fs-extra';
 import * as path from 'path';
 
 async function fixImports(): Promise<void> {
-  console.log('\nFixing FHEVM imports in all contracts...\n');
+  console.log('\nReverting FHEVM imports to use fhevm package...\n');
 
   const examplesPath = path.join(__dirname, '../../examples');
   const examples = await fs.readdir(examplesPath);
@@ -22,12 +22,11 @@ async function fixImports(): Promise<void> {
       const filePath = path.join(contractsPath, file);
       let content = await fs.readFile(filePath, 'utf-8');
       
-      // Replace old imports with new ones
       const oldContent = content;
       
-      // Fix fhevm imports to @fhevm/solidity
-      content = content.replace(/import "fhevm\//g, 'import "@fhevm/solidity/');
-      content = content.replace(/import 'fhevm\//g, "import '@fhevm/solidity/");
+      // Revert @fhevm/solidity back to fhevm
+      content = content.replace(/import "@fhevm\/solidity\//g, 'import "fhevm/');
+      content = content.replace(/import '@fhevm\/solidity\//g, "import 'fhevm/");
       
       if (content !== oldContent) {
         await fs.writeFile(filePath, content);
@@ -48,8 +47,8 @@ async function fixImports(): Promise<void> {
       let content = await fs.readFile(filePath, 'utf-8');
       
       const oldContent = content;
-      content = content.replace(/import "fhevm\//g, 'import "@fhevm/solidity/');
-      content = content.replace(/import 'fhevm\//g, "import '@fhevm/solidity/");
+      content = content.replace(/import "@fhevm\/solidity\//g, 'import "fhevm/');
+      content = content.replace(/import '@fhevm\/solidity\//g, "import 'fhevm/");
       
       if (content !== oldContent) {
         await fs.writeFile(filePath, content);
@@ -59,7 +58,7 @@ async function fixImports(): Promise<void> {
     }
   }
 
-  console.log(`\n[DONE] Fixed ${fixed} contract files\n`);
+  console.log(`\n[DONE] Reverted ${fixed} contract files\n`);
 }
 
 fixImports().catch(console.error);

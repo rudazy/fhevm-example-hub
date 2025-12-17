@@ -1,10 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.24;
 
-import "@fhevm/solidity/lib/TFHE.sol";
-import "@fhevm/solidity/config/ZamaFHEVMConfig.sol";
-import "@fhevm/solidity/config/ZamaGatewayConfig.sol";
-import "@fhevm/solidity/gateway/GatewayCaller.sol";
+import "fhevm/lib/TFHE.sol";
+
+
+import "fhevm/gateway/GatewayCaller.sol";
+import "fhevm/gateway/lib/Gateway.sol";
 
 /**
  * @title BlindAuction
@@ -18,7 +19,7 @@ import "@fhevm/solidity/gateway/GatewayCaller.sol";
  * @custom:category advanced
  * @custom:difficulty advanced
  */
-contract BlindAuction is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, GatewayCaller {
+contract BlindAuction is GatewayCaller {
     
     address public auctioneer;
     uint256 public auctionEndTime;
@@ -44,7 +45,7 @@ contract BlindAuction is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, Gatew
         auctioneer = msg.sender;
         auctionEndTime = block.timestamp + _biddingTime;
         highestBid = TFHE.asEuint64(0);
-        TFHE.allowThis(highestBid);
+        TFHE.allow(highestBid, address(this));
     }
 
     modifier onlyBeforeEnd() {
@@ -75,7 +76,7 @@ contract BlindAuction is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, Gatew
         bids[msg.sender] = bidAmount;
         hasBid[msg.sender] = true;
         
-        TFHE.allowThis(bidAmount);
+        TFHE.allow(bidAmount, address(this));
         TFHE.allow(bidAmount, msg.sender);
         
         // Check if this bid is higher than current highest
@@ -83,7 +84,7 @@ contract BlindAuction is SepoliaZamaFHEVMConfig, SepoliaZamaGatewayConfig, Gatew
         
         // Update highest bid using encrypted select
         highestBid = TFHE.select(isHigher, bidAmount, highestBid);
-        TFHE.allowThis(highestBid);
+        TFHE.allow(highestBid, address(this));
         
         // Track potential winner (this leaks some info but necessary for demo)
         // In production, you'd handle this differently
